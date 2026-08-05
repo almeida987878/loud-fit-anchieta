@@ -1,0 +1,13 @@
+node_modules/
+.vercel
+.DS_Store
+Thumbs.db
+*.log
+.claude/
+
+# Raw uploaded source files (organized copies live in assets/)
+/*.jpg
+/*.jpeg
+/*.png
+/*.mp4
+/*.mov

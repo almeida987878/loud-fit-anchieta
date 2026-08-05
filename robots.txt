@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://www.loudfitanchieta.com.br/sitemap.xml
