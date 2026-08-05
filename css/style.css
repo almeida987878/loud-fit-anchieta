@@ -586,8 +586,8 @@ button { font-family: inherit; }
   gap: 64px;
   align-items: center;
 }
-.pain-visual { position: relative; border-radius: var(--radius-lg); overflow: hidden; }
-.pain-visual img { border-radius: var(--radius-lg); }
+.pain-visual { position: relative; border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--line); }
+.pain-visual img { border-radius: var(--radius-lg); width: 100%; height: 100%; object-fit: cover; }
 .pain-visual-glow {
   position: absolute;
   inset: -20% -20% auto auto;
@@ -612,18 +612,34 @@ button { font-family: inherit; }
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
+  counter-reset: diffcount;
 }
 
 .diff-card {
+  position: relative;
   background: linear-gradient(160deg, var(--charcoal), var(--graphite));
   border: 1px solid var(--line);
+  border-top: 2px solid rgba(255,210,0,0.25);
   border-radius: var(--radius-md);
   padding: 30px 26px;
+  overflow: hidden;
+  counter-increment: diffcount;
   transition: transform 0.35s var(--ease), border-color 0.35s ease, box-shadow 0.35s ease;
+}
+.diff-card::after {
+  content: counter(diffcount, decimal-leading-zero);
+  position: absolute;
+  top: 14px; right: 18px;
+  font-family: var(--font-display);
+  font-size: 30px;
+  color: rgba(255,255,255,0.06);
+  letter-spacing: 1px;
+  line-height: 1;
 }
 .diff-card:hover {
   transform: translateY(-6px);
   border-color: rgba(255,210,0,0.4);
+  border-top-color: var(--yellow);
   box-shadow: 0 16px 34px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,210,0,0.08);
 }
 .diff-icon {
@@ -677,8 +693,12 @@ button { font-family: inherit; }
 .mosaic-item img {
   width: 100%; height: 100%;
   object-fit: cover;
+  object-position: center;
   transition: transform 0.6s var(--ease), filter 0.6s ease;
 }
+.mosaic-item img.obj-top { object-position: top center; }
+.mosaic-item img.obj-bottom { object-position: bottom center; }
+.mosaic-item img.obj-low, .modalidade-img img.obj-low { object-position: center 78%; }
 .mosaic-item:hover img { transform: scale(1.07); filter: brightness(1.05); }
 
 .mosaic-item::after {
@@ -694,6 +714,38 @@ button { font-family: inherit; }
   font-weight: 700;
   letter-spacing: 0.3px;
   color: var(--white);
+}
+
+/* corner-bracket accent on hover — premium editorial touch, shared by all photo frames */
+.mosaic-item, .modalidade-img, .pain-visual, .iniciantes-visual {
+  position: relative;
+}
+.mosaic-item::before,
+.modalidade-img::before,
+.pain-visual::before,
+.iniciantes-visual::before {
+  content: "";
+  position: absolute;
+  inset: 10px;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s ease, inset 0.35s ease;
+  background:
+    linear-gradient(var(--yellow), var(--yellow)) top left / 22px 2px no-repeat,
+    linear-gradient(var(--yellow), var(--yellow)) top left / 2px 22px no-repeat,
+    linear-gradient(var(--yellow), var(--yellow)) top right / 22px 2px no-repeat,
+    linear-gradient(var(--yellow), var(--yellow)) top right / 2px 22px no-repeat,
+    linear-gradient(var(--yellow), var(--yellow)) bottom left / 22px 2px no-repeat,
+    linear-gradient(var(--yellow), var(--yellow)) bottom left / 2px 22px no-repeat,
+    linear-gradient(var(--yellow), var(--yellow)) bottom right / 22px 2px no-repeat,
+    linear-gradient(var(--yellow), var(--yellow)) bottom right / 2px 22px no-repeat;
+}
+.mosaic-item:hover::before,
+.modalidade-card:hover .modalidade-img::before,
+.pain-visual:hover::before,
+.iniciantes-visual:hover::before {
+  opacity: 1; inset: 14px;
 }
 
 .section-cta { text-align: center; }
@@ -715,7 +767,7 @@ button { font-family: inherit; }
 
 .modalidades-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 22px;
 }
 
@@ -734,7 +786,7 @@ button { font-family: inherit; }
 .modalidade-body h3 { font-size: 18px; font-weight: 800; margin: 0 0 8px; }
 .modalidade-body p { color: var(--text-muted); font-size: 14.5px; margin: 0; }
 
-@media (max-width: 900px) {
+@media (max-width: 1080px) {
   .modalidades-grid { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 580px) {

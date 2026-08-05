@@ -11,3 +11,6 @@ Thumbs.db
 /*.png
 /*.mp4
 /*.mov
+
+.vercel
+.env*
