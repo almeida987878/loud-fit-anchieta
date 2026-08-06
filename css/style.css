@@ -1278,6 +1278,90 @@ button { font-family: inherit; }
 }
 
 /* =========================================================
+   PESO DECORATIVO DO HERO (PNG transparente)
+   ========================================================= */
+
+.hero-weight {
+  position: absolute;
+  top: 40%;
+  right: 5%;
+  width: min(30vw, 460px);
+  z-index: 1;
+  pointer-events: auto;
+  transform: translate3d(var(--mx, 0px), calc(var(--sy, 0px) + var(--my, 0px)), 0);
+  transition: transform 0.2s ease-out;
+}
+
+.hero-weight-glow {
+  position: absolute;
+  inset: -22%;
+  z-index: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(243, 196, 0, 0.32), transparent 70%);
+  filter: blur(46px);
+  --glow-opacity: 0.55;
+  --glow-scale: 1;
+  opacity: var(--glow-opacity);
+  transform: scale(var(--glow-scale));
+  animation: heroGlowPulse 3.8s ease-in-out infinite;
+}
+
+.hero-weight-float {
+  position: relative;
+  z-index: 1;
+  animation: heroWeightFloat 8s ease-in-out infinite;
+}
+
+.hero-weight-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 26px 34px rgba(0, 0, 0, 0.5));
+  transition: transform 0.4s var(--ease), filter 0.4s ease;
+}
+
+.hero-weight:hover .hero-weight-img {
+  transform: scale(1.06);
+  filter: drop-shadow(0 30px 42px rgba(0, 0, 0, 0.55)) brightness(1.05);
+}
+.hero-weight:hover .hero-weight-glow {
+  --glow-opacity: 0.9;
+  --glow-scale: 1.18;
+  animation-duration: 2.2s;
+}
+
+@keyframes heroWeightFloat {
+  0% { transform: translateY(0) rotate(-6deg); }
+  50% { transform: translateY(-18px) rotate(6deg); }
+  100% { transform: translateY(0) rotate(-6deg); }
+}
+
+@keyframes heroGlowPulse {
+  0%, 100% { opacity: var(--glow-opacity); transform: scale(var(--glow-scale)); }
+  50% { opacity: calc(var(--glow-opacity) + 0.25); transform: scale(calc(var(--glow-scale) + 0.1)); }
+}
+
+@media (max-width: 900px) {
+  .hero-weight { width: min(38vw, 320px); right: 2%; top: 36%; }
+}
+
+@media (max-width: 768px) {
+  .hero-weight {
+    top: 4%;
+    right: -6%;
+    width: 60vw;
+    max-width: 340px;
+    opacity: 0.28;
+    z-index: 1;
+  }
+  .hero-content { position: relative; z-index: 2; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-weight-glow, .hero-weight-float { animation: none; }
+}
+
+/* =========================================================
    SCROLL REVEAL ANIMATIONS
    ========================================================= */
 

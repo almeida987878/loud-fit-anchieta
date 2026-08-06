@@ -234,6 +234,8 @@
     // Movimento sutil seguindo o cursor, só na primeira dobra
     const heroFloaters = document.querySelector("#hero .floaters");
     const heroSection = document.getElementById("hero");
+    const heroWeight = document.querySelector("#hero .hero-weight");
+
     if (heroFloaters && heroSection && window.matchMedia("(hover: hover)").matches) {
       heroSection.addEventListener("mousemove", (e) => {
         const rect = heroSection.getBoundingClientRect();
@@ -241,10 +243,19 @@
         const my = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
         heroFloaters.style.setProperty("--mx", (mx * 12).toFixed(1) + "px");
         heroFloaters.style.setProperty("--my", (my * 10).toFixed(1) + "px");
+        if (heroWeight) {
+          // camada "mais próxima": reage um pouco mais ao cursor, criando profundidade
+          heroWeight.style.setProperty("--mx", (mx * 20).toFixed(1) + "px");
+          heroWeight.style.setProperty("--my", (my * 16).toFixed(1) + "px");
+        }
       });
       heroSection.addEventListener("mouseleave", () => {
         heroFloaters.style.setProperty("--mx", "0px");
         heroFloaters.style.setProperty("--my", "0px");
+        if (heroWeight) {
+          heroWeight.style.setProperty("--mx", "0px");
+          heroWeight.style.setProperty("--my", "0px");
+        }
       });
     }
   }
