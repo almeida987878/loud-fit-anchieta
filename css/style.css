@@ -844,15 +844,34 @@ button { font-family: inherit; }
   border-radius: var(--radius-lg);
   padding: 32px 28px;
   transform-style: preserve-3d;
-  transition: transform 0.15s ease-out, border-color 0.3s ease;
+  box-shadow: 0 0 0 rgba(243, 196, 0, 0);
+  transition: transform 0.15s ease-out, border-color 0.3s ease, box-shadow 0.3s ease;
 }
-.plan-card:hover { transform: translateY(-3px); border-color: rgba(255,255,255,0.2); }
+.plan-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(243, 196, 0, 0.4);
+  box-shadow: 0 0 26px rgba(243, 196, 0, 0.16), 0 14px 30px rgba(0, 0, 0, 0.35);
+}
 
 .plan-featured {
   background: transparent;
   border: 1px solid var(--yellow);
+  animation: planGlowPulse 3.2s ease-in-out infinite;
 }
-.plan-featured:hover { transform: translateY(-3px); border-color: var(--yellow); }
+.plan-featured:hover {
+  transform: translateY(-3px);
+  border-color: var(--yellow);
+  animation-duration: 1.6s;
+}
+
+@keyframes planGlowPulse {
+  0%, 100% {
+    box-shadow: 0 0 18px rgba(243, 196, 0, 0.25), 0 0 46px rgba(243, 196, 0, 0.1), inset 0 0 18px rgba(243, 196, 0, 0.03);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(243, 196, 0, 0.45), 0 0 74px rgba(243, 196, 0, 0.2), inset 0 0 26px rgba(243, 196, 0, 0.06);
+  }
+}
 
 .plan-index {
   font-family: var(--font-body);
@@ -1283,19 +1302,30 @@ button { font-family: inherit; }
 
 .hero-weight {
   position: absolute;
-  top: 40%;
-  right: 5%;
-  width: min(30vw, 460px);
+  top: 42%;
+  right: 6%;
+  width: min(24vw, 380px);
   z-index: 1;
   pointer-events: auto;
   transform: translate3d(var(--mx, 0px), calc(var(--sy, 0px) + var(--my, 0px)), 0);
   transition: transform 0.2s ease-out;
 }
 
+/* vinheta escura atrás do peso: escurece o fundo do vídeo ali para o
+   objeto "assentar" na cena em vez de parecer um adesivo colado por cima */
+.hero-weight-vignette {
+  position: absolute;
+  inset: -55%;
+  z-index: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0.25) 45%, transparent 72%);
+  filter: blur(20px);
+}
+
 .hero-weight-glow {
   position: absolute;
   inset: -22%;
-  z-index: 0;
+  z-index: 1;
   border-radius: 50%;
   background: radial-gradient(circle, rgba(243, 196, 0, 0.32), transparent 70%);
   filter: blur(46px);
@@ -1308,7 +1338,7 @@ button { font-family: inherit; }
 
 .hero-weight-float {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   animation: heroWeightFloat 8s ease-in-out infinite;
 }
 
@@ -1316,13 +1346,13 @@ button { font-family: inherit; }
   display: block;
   width: 100%;
   height: auto;
-  filter: drop-shadow(0 26px 34px rgba(0, 0, 0, 0.5));
+  filter: drop-shadow(0 22px 30px rgba(0, 0, 0, 0.6)) saturate(0.92) contrast(1.04) brightness(0.97);
   transition: transform 0.4s var(--ease), filter 0.4s ease;
 }
 
 .hero-weight:hover .hero-weight-img {
   transform: scale(1.06);
-  filter: drop-shadow(0 30px 42px rgba(0, 0, 0, 0.55)) brightness(1.05);
+  filter: drop-shadow(0 28px 40px rgba(0, 0, 0, 0.6)) saturate(1) contrast(1.05) brightness(1.02);
 }
 .hero-weight:hover .hero-weight-glow {
   --glow-opacity: 0.9;
@@ -1342,7 +1372,7 @@ button { font-family: inherit; }
 }
 
 @media (max-width: 900px) {
-  .hero-weight { width: min(38vw, 320px); right: 2%; top: 36%; }
+  .hero-weight { width: min(32vw, 280px); right: 2%; top: 36%; }
 }
 
 @media (max-width: 768px) {
