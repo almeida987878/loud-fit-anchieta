@@ -843,7 +843,8 @@ button { font-family: inherit; }
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
   padding: 32px 28px;
-  transition: transform 0.3s var(--ease), border-color 0.3s ease;
+  transform-style: preserve-3d;
+  transition: transform 0.15s ease-out, border-color 0.3s ease;
 }
 .plan-card:hover { transform: translateY(-3px); border-color: rgba(255,255,255,0.2); }
 
@@ -1197,6 +1198,83 @@ button { font-family: inherit; }
 }
 @media (prefers-reduced-motion: reduce) {
   .whatsapp-float { animation: none; }
+}
+
+/* =========================================================
+   ELEMENTOS FLUTUANTES DECORATIVOS
+   (anilhas, halteres, kettlebell + glow orbs — hero, planos, CTA final)
+   ========================================================= */
+
+.planos-section { position: relative; overflow: hidden; }
+.planos-section .container { position: relative; z-index: 2; }
+
+.floaters {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+  will-change: transform;
+  transform: translate3d(var(--mx, 0px), calc(var(--sy, 0px) + var(--my, 0px)), 0);
+  transition: transform 0.2s ease-out;
+}
+
+.float-icon {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  color: rgba(243, 196, 0, 0.4);
+  filter: drop-shadow(0 0 14px rgba(243, 196, 0, 0.25));
+  animation: floatDrift var(--dur, 9s) ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+}
+.float-icon--dumbbell { width: 80px; height: 32px; color: rgba(242, 240, 235, 0.28); filter: drop-shadow(0 0 10px rgba(242, 240, 235, 0.15)); }
+.float-icon--plate { width: 56px; height: 56px; }
+.float-icon--kettlebell { width: 58px; height: 58px; color: rgba(242, 240, 235, 0.26); filter: drop-shadow(0 0 10px rgba(242, 240, 235, 0.15)); }
+
+.glow-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(55px);
+  background: radial-gradient(circle, rgba(243, 196, 0, 0.35), transparent 70%);
+  animation: floatDrift 13s ease-in-out infinite;
+}
+
+@keyframes floatDrift {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(var(--dx, 14px), var(--dy, -18px)) rotate(var(--rot, 8deg)); }
+}
+
+/* Hero */
+.hero .fi-a { top: 20%; left: 6%; --dx: 14px; --dy: -18px; --rot: -10deg; --dur: 8s; }
+.hero .fi-b { top: 64%; left: 4%; width: 88px; height: 36px; --dx: -12px; --dy: 14px; --rot: 6deg; --dur: 10s; --delay: 1.2s; animation-delay: var(--delay); }
+.hero .fi-c { top: 30%; right: 5%; width: 50px; height: 50px; --dx: -10px; --dy: 14px; --rot: 10deg; --dur: 9s; --delay: .6s; animation-delay: var(--delay); }
+.hero .orb-a { top: 6%; left: 22%; width: 260px; height: 260px; }
+.hero .orb-b { bottom: 6%; right: 12%; width: 200px; height: 200px; background: radial-gradient(circle, rgba(242,240,235,0.07), transparent 70%); animation-delay: 2s; }
+
+/* Planos */
+.planos-section .fi-a { top: 22%; left: 2.5%; width: 64px; height: 26px; --dx: 12px; --dy: -14px; --rot: -8deg; --dur: 9s; }
+.planos-section .fi-b { top: 48%; right: 3%; width: 54px; height: 54px; --dx: -10px; --dy: 12px; --rot: 10deg; --dur: 11s; --delay: 1s; animation-delay: var(--delay); }
+.planos-section .orb-a { top: 30%; right: 6%; width: 220px; height: 220px; }
+
+/* CTA final */
+.final-cta-section .fi-a { top: 16%; left: 6%; width: 52px; height: 52px; --dx: 10px; --dy: -14px; --rot: -6deg; --dur: 8.5s; }
+.final-cta-section .fi-b { bottom: 14%; left: 10%; width: 56px; height: 56px; --dx: -12px; --dy: 14px; --rot: 8deg; --dur: 10.5s; --delay: .8s; animation-delay: var(--delay); }
+.final-cta-section .fi-c { top: 20%; right: 7%; width: 84px; height: 34px; --dx: -14px; --dy: 16px; --rot: -8deg; --dur: 9.5s; --delay: 1.6s; animation-delay: var(--delay); }
+.final-cta-section .orb-a { top: 10%; right: 16%; width: 240px; height: 240px; }
+.final-cta-section .orb-b { bottom: 8%; left: 8%; width: 200px; height: 200px; }
+
+@media (max-width: 768px) {
+  .float-icon { opacity: 0.7; }
+  .hero .fi-b, .final-cta-section .fi-c { display: none; }
+  .glow-orb { filter: blur(38px); }
+  .hero .orb-a, .final-cta-section .orb-a { width: 170px; height: 170px; }
+  .hero .orb-b, .final-cta-section .orb-b { width: 140px; height: 140px; }
+  .planos-section .orb-a { width: 150px; height: 150px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .floaters { display: none; }
 }
 
 /* =========================================================

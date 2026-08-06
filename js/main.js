@@ -195,6 +195,61 @@
   }
 
   /* =======================================================
+     ELEMENTOS FLUTUANTES: parallax de scroll + mouse no Hero
+     ======================================================= */
+  const prefersReducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  if (!prefersReducedMotionQuery.matches) {
+    const parallaxLayers = document.querySelectorAll("[data-parallax]");
+
+    if (parallaxLayers.length) {
+      let ticking = false;
+
+      function updateScrollParallax() {
+        const vh = window.innerHeight;
+        parallaxLayers.forEach((layer) => {
+          const speed = parseFloat(layer.dataset.parallax) || 0.06;
+          const rect = layer.getBoundingClientRect();
+          const centerDelta = vh / 2 - (rect.top + rect.height / 2);
+          const offset = (centerDelta * speed).toFixed(1);
+          layer.style.setProperty("--sy", offset + "px");
+        });
+        ticking = false;
+      }
+
+      updateScrollParallax();
+      window.addEventListener(
+        "scroll",
+        () => {
+          if (!ticking) {
+            window.requestAnimationFrame(updateScrollParallax);
+            ticking = true;
+          }
+        },
+        { passive: true }
+      );
+      window.addEventListener("resize", updateScrollParallax);
+    }
+
+    // Movimento sutil seguindo o cursor, só na primeira dobra
+    const heroFloaters = document.querySelector("#hero .floaters");
+    const heroSection = document.getElementById("hero");
+    if (heroFloaters && heroSection && window.matchMedia("(hover: hover)").matches) {
+      heroSection.addEventListener("mousemove", (e) => {
+        const rect = heroSection.getBoundingClientRect();
+        const mx = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
+        const my = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
+        heroFloaters.style.setProperty("--mx", (mx * 12).toFixed(1) + "px");
+        heroFloaters.style.setProperty("--my", (my * 10).toFixed(1) + "px");
+      });
+      heroSection.addEventListener("mouseleave", () => {
+        heroFloaters.style.setProperty("--mx", "0px");
+        heroFloaters.style.setProperty("--my", "0px");
+      });
+    }
+  }
+
+  /* =======================================================
      HEADER: fundo ao rolar
      ======================================================= */
   const header = document.getElementById("siteHeader");
@@ -282,6 +337,29 @@
       }
     });
   });
+
+  /* =======================================================
+     TILT 3D SUTIL NOS CARDS DE PLANOS (hover, desktop)
+     ======================================================= */
+  if (!prefersReducedMotionQuery.matches && window.matchMedia("(hover: hover)").matches) {
+    document.querySelectorAll(".plan-card").forEach((card) => {
+      const maxTilt = 4;
+
+      card.addEventListener("mousemove", (e) => {
+        const rect = card.getBoundingClientRect();
+        const px = (e.clientX - rect.left) / rect.width - 0.5;
+        const py = (e.clientY - rect.top) / rect.height - 0.5;
+        const rotateY = (px * maxTilt * 2).toFixed(2);
+        const rotateX = (py * -maxTilt * 2).toFixed(2);
+        card.style.transform =
+          "perspective(900px) rotateX(" + rotateX + "deg) rotateY(" + rotateY + "deg) translateY(-3px)";
+      });
+
+      card.addEventListener("mouseleave", () => {
+        card.style.transform = "";
+      });
+    });
+  }
 
   /* =======================================================
      FORMULÁRIO DE AULA EXPERIMENTAL -> WHATSAPP
